@@ -43,16 +43,12 @@ class GRUCellWithGates(torch.nn.Module):
         self.input_size = input_size
         self.hidden_size = hidden_size
 
-        # Linear layers for input-to-hidden weights and biases
         self.weight_ih_layer = torch.nn.Linear(input_size, 3 * hidden_size, bias=False)
         self.bias_ih = torch.nn.Parameter(torch.randn(3 * hidden_size))
-
-        # Linear layers for hidden-to-hidden weights and biases
         self.weight_hh_layer = torch.nn.Linear(hidden_size, 3 * hidden_size, bias=False)
         self.bias_hh = torch.nn.Parameter(torch.randn(3 * hidden_size))
 
-        self._set_weight_hh()
-        self._set_weight_ih()
+        self._set_weight()
 
     def forward(self, input, hidden_state):
         input_proj = self.weight_ih_layer(input)
@@ -68,15 +64,11 @@ class GRUCellWithGates(torch.nn.Module):
         n = torch.tanh(n_i+ n_bi + r*(n_h + n_bh))
 
         new_hidden_state = (1 - z) * n + z * hidden_state[:, -self.hidden_size:]
-
-        self._set_weight_hh()
-        self._set_weight_ih()
+        self._set_weight()
         return torch.cat([r, z, n, new_hidden_state], dim=1)
     
-    def _set_weight_hh(self):
+    def _set_weight(self):
         self.weight_hh = nn.Parameter(self.weight_hh_layer.weight)
-
-    def _set_weight_ih(self):
         self.weight_ih = nn.Parameter(self.weight_ih_layer.weight)
 
     def init_weight(self, grucell):
@@ -84,6 +76,5 @@ class GRUCellWithGates(torch.nn.Module):
         self.weight_ih_layer.weight.data = grucell.weight_ih.data
         self.bias_hh.data = grucell.bias_hh
         self.bias_ih.data = grucell.bias_ih
-        self._set_weight_hh()
-        self._set_weight_ih()
+        self._set_weight()
         

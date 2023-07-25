@@ -26,6 +26,7 @@ from torch.autograd.functional import jacobian
 
 from FixedPointFinderBase import FixedPointFinderBase
 from FixedPoints import FixedPoints
+from wrapper import RNNWrapper
 
 class FixedPointFinderTorch(FixedPointFinderBase):
 
@@ -55,6 +56,7 @@ class FixedPointFinderTorch(FixedPointFinderBase):
 
             See FixedPointFinderBase.py for additional keyword arguments.
         '''
+        rnn = RNNWrapper(rnn)
         self.rnn = rnn
         self.device = next(rnn.parameters()).device
 
