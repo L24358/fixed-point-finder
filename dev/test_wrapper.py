@@ -39,10 +39,8 @@ if False:
 if True:
     # Build cell, Wrapper(cell), FixedPointFinder
     h = 10
-    # rnncell = nn.GRUCell(1, h)
-    # model = RNNWrapper(rnncell)
-    from utils import GRUCellWrapper
-    model = GRUCellWrapper(1, 10)
+    rnncell = nn.GRUCell(1, h)
+    model = RNNWrapper(rnncell)
     fpf = FixedPointFinderTorch(model)
 
     # get ground truth fp
@@ -60,6 +58,3 @@ if True:
     inputs = np.array([inp])
 
     unique_fps, all_fps = fpf.find_fixed_points(initial_states, inputs)
-    # print("Are the fixed points for GRUCell correct? ", not dy.different(unique_fps.xstar[0], fps_true)[0])
-
-import pdb; pdb.set_trace()
