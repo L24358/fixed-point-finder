@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 import numpy as np
 from FixedPointFinderTorch import FixedPointFinderTorch
-from wrapper import RNNWrapper
+from dev.wrapper import RNNWrapper
 
 import dev.dynamics as dy
 from dev.utils import get_rnn_params, get_gru_params
@@ -39,8 +39,10 @@ if False:
 if True:
     # Build cell, Wrapper(cell), FixedPointFinder
     h = 10
-    rnncell = nn.GRUCell(1, h)
-    model = RNNWrapper(rnncell)
+    # rnncell = nn.GRUCell(1, h)
+    # model = RNNWrapper(rnncell)
+    from utils import GRUCellWrapper
+    model = GRUCellWrapper(1, 10)
     fpf = FixedPointFinderTorch(model)
 
     # get ground truth fp

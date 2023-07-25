@@ -13,7 +13,7 @@ def get_gru_params(gru):
     gru.weight_ih.requires_grad = False
     gru.bias_hh.requires_grad = False
     gru.bias_ih.requires_grad = False
-    args = [10, *np.split(gru.weight_hh.numpy(), 3), *np.split(gru.weight_ih.numpy(), 3),
+    args = [gru.weight_hh.shape[-1], *np.split(gru.weight_hh.numpy(), 3), *np.split(gru.weight_ih.numpy(), 3),
             *np.split(gru.bias_hh.numpy(), 3), *np.split(gru.bias_ih.numpy(), 3)]
     return args
 
